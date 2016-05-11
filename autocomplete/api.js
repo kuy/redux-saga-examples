@@ -1,7 +1,6 @@
 import languages from './languages';
 
 function filter(list, text) {
-  console.log('text', text);
   if (!text) {
     return [];
   }

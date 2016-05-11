@@ -4,18 +4,22 @@ import {
 } from './actions';
 import API from './api';
 
-function* handleRequestSuggests() {
+function* runRequestSuggest(text) {
+  const { data, error } = yield call(API.suggest, text);
+  if (data && !error) {
+    yield put(successSuggest({ data }));
+  } else {
+    yield put(failureSuggest({ error }));
+  }
+}
+
+function* handleRequestSuggest() {
   while (true) {
     const { payload } = yield take(REQUEST_SUGGEST);
-    const { data, error } = yield call(API.suggest, payload);
-    if (data && !error) {
-      yield put(successSuggest({ data }));
-    } else {
-      yield put(failureSuggest({ error }));
-    }
+    yield fork(runRequestSuggest, payload);
   }
 }
 
 export default function* rootSaga() {
-  yield fork(handleRequestSuggests);
+  yield fork(handleRequestSuggest);
 }
