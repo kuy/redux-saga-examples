@@ -1,0 +1,17 @@
+{
+  "presets": [
+    "react", "es2015", "stage-2"
+  ],
+  "env": {
+    "development": {
+      "presets": [
+        "power-assert"
+      ]
+    },
+    "production": {
+      "plugins": [
+        "babel-plugin-unassert"
+      ]
+    }
+  }
+}

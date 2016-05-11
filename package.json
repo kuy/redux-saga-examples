@@ -1,0 +1,39 @@
+{
+  "name": "redux-saga-examples",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kuy/react-transport.git"
+  },
+  "homepage": "https://github.com/kuy/react-transport",
+  "scripts": {
+    "start": "./node_modules/.bin/webpack-dev-server --progress --color --content-base public/"
+  },
+  "authors": [
+    "Yuki Kodama <endflow.net@gmail.com>"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.8.0",
+    "babel-core": "^6.8.0",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-unassert": "^2.1.0",
+    "babel-polyfill": "^6.8.0",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-power-assert": "^1.0.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-2": "^6.5.0",
+    "babel-register": "^6.8.0",
+    "mocha": "^2.4.5",
+    "power-assert": "^1.4.1",
+    "react": "^15.0.2",
+    "react-autosuggest": "^3.7.3",
+    "react-dom": "^15.0.2",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-actions": "^0.9.1",
+    "redux-logger": "^2.6.1",
+    "redux-saga": "^0.10.2",
+    "webpack": "^1.13.0",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
