@@ -14,21 +14,24 @@ function* runRequestSuggest(text) {
   }
 }
 
-function forkLater(task, ...args) {
-  return fork(function* () {
-    yield call(delay, 1000);
-    yield fork(task, ...args);
-  });
+function createLazily(msec = 1000) {
+  let ongoing;
+  return function* (task, ...args) {
+    if (ongoing && ongoing.isRunning()) {
+      ongoing.cancel();
+    }
+    ongoing = yield fork(function* () {
+      yield call(delay, msec);
+      yield fork(task, ...args);
+    });
+  }
 }
 
 function* handleRequestSuggest() {
-  let task;
+  const lazily = createLazily();
   while (true) {
     const { payload } = yield take(REQUEST_SUGGEST);
-    if (task && task.isRunning()) {
-      task.cancel();
-    }
-    task = yield forkLater(runRequestSuggest, payload);
+    yield fork(lazily, runRequestSuggest, payload);
   }
 }
 
