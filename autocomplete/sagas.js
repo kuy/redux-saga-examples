@@ -1,12 +1,12 @@
-import { takeEvery } from 'redux-saga';
+import { delay } from 'redux-saga';
 import { call, put, fork, take } from 'redux-saga/effects';
 import {
   REQUEST_SUGGEST, successSuggest, failureSuggest
 } from './actions';
 import API from './api';
 
-function* runRequestSuggest(action) {
-  const { data, error } = yield call(API.suggest, action.payload);
+function* runRequestSuggest(text) {
+  const { data, error } = yield call(API.suggest, text);
   if (data && !error) {
     yield put(successSuggest({ data }));
   } else {
@@ -14,8 +14,22 @@ function* runRequestSuggest(action) {
   }
 }
 
+function forkLater(task, ...args) {
+  return fork(function* () {
+    yield call(delay, 1000);
+    yield fork(task, ...args);
+  });
+}
+
 function* handleRequestSuggest() {
-  yield* takeEvery(REQUEST_SUGGEST, runRequestSuggest);
+  let task;
+  while (true) {
+    const { payload } = yield take(REQUEST_SUGGEST);
+    if (task && task.isRunning()) {
+      task.cancel();
+    }
+    task = yield forkLater(runRequestSuggest, payload);
+  }
 }
 
 export default function* rootSaga() {
