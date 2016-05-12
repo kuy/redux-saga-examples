@@ -1,19 +1,19 @@
 import { combineReducers } from 'redux';
 import {
-  NEW_JOB, RUN_JOB, SUCCESS_JOB, FAILURE_JOB
+  NEW_JOB, RUN_JOB, SUCCESS_JOB, FAILURE_JOB,
+  TOGGLE_PRODUCER, INCREMENT_LIMIT, DECREMENT_LIMIT
 } from './actions';
+import * as throttleSelector from './selectors/throttle';
 
 const initial = {
-  jobs: []
+  app: {
+    producer: true
+  },
+  throttle: {
+    jobs: [],
+    limit: 3
+  },
 };
-
-function getJob(list, id) {
-  const jobs = list.filter(job => job.id === id);
-  if (jobs.length !== 1) {
-    throw `ERROR: JOB #${id} not found`
-  }
-  return jobs[0];
-}
 
 function swapJob(list, newJob) {
   let pos = list.findIndex(job => job.id === newJob.id);
@@ -21,34 +21,55 @@ function swapJob(list, newJob) {
 }
 
 const handlers = {
-  jobs: {
+  app: {
+    [TOGGLE_PRODUCER]: state => {
+      return { ...state, producer: !state.producer };
+    },
+  },
+  throttle: {
     [NEW_JOB]: (state, action) => {
-      return [ ...state, action.payload ];
+      return { ...state, jobs: [ ...state.jobs, action.payload ] };
     },
     [RUN_JOB]: (state, action) => {
-      const job = getJob(state, action.payload.id);
+      const job = throttleSelector.job(action.payload.id)({ throttle: state });
       const newJob = { ...job, status: 'running' };
-      return swapJob(state, newJob);
+      return { ...state, jobs: swapJob(state.jobs, newJob) };
     },
     [SUCCESS_JOB]: (state, action) => {
-      const job = getJob(state, action.payload.id);
+      const job = throttleSelector.job(action.payload.id)({ throttle: state });
       const newJob = { ...job, status: 'success' };
-      return swapJob(state, newJob);
+      return { ...state, jobs: swapJob(state.jobs, newJob) };
     },
     [FAILURE_JOB]: (state, action) => {
-      const job = getJob(state, action.payload.id);
+      const job = throttleSelector.job(action.payload.id)({ throttle: state });
       const newJob = { ...job, status: 'failure' };
-      return swapJob(state, newJob);
+      return { ...state, jobs: swapJob(state.jobs, newJob) };
     },
+    [INCREMENT_LIMIT]: state => {
+      return { ...state, limit: state.limit + 1 };
+    },
+    [DECREMENT_LIMIT]: state => {
+      if (0 < state.limit) {
+        return { ...state, limit: state.limit - 1 };
+      } else {
+        return state;
+      }
+    }
   }
 };
 
-function jobs(state = initial.jobs, action) {
-  const handler = handlers.jobs[action.type];
+function throttle(state = initial.throttle, action) {
+  const handler = handlers.throttle[action.type];
+  if (!handler) { return state; }
+  return handler(state, action);
+}
+
+function app(state = initial.app, action) {
+  const handler = handlers.app[action.type];
   if (!handler) { return state; }
   return handler(state, action);
 }
 
 export default combineReducers(
-  { jobs }
+  { app, throttle }
 );

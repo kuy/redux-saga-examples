@@ -1,12 +1,10 @@
-import { delay } from 'redux-saga';
 import { call, put, fork, take, select } from 'redux-saga/effects';
 import {
-  REQUEST_SOMETHING, SUCCESS_SOMETHING, FAILURE_SOMETHING,
-  NEW_JOB, SUCCESS_JOB, FAILURE_JOB,
-  newJob, runJob, successJob, failureJob,
-  successSomething, failureSomething
+  REQUEST_SOMETHING, INCREMENT_LIMIT,
+  NEW_JOB, RUN_JOB, SUCCESS_JOB, FAILURE_JOB,
+  newJob, runJob, successJob, successSomething, failureSomething
 } from './actions';
-import * as jobsSelector from './selectors/jobs';
+import * as throttleSelector from './selectors/throttle';
 
 const newId = (() => {
   let n = 0;
@@ -37,26 +35,27 @@ function* withThrottle(job, ...args) {
 }
 
 function* handleThrottle() {
-  const LIMIT = 3;
   while (true) {
-    yield take([NEW_JOB, SUCCESS_JOB, FAILURE_JOB]);
+    yield take([NEW_JOB, RUN_JOB, SUCCESS_JOB, FAILURE_JOB, INCREMENT_LIMIT]);
+    while (true) {
+      const jobs = yield select(throttleSelector.pending);
+      if (jobs.length === 0) {
+        break; // No pending jobs
+      }
 
-    const jobs = yield select(jobsSelector.pending);
-    if (jobs.length === 0) {
-      continue; // No pending jobs
+      const limit = yield select(throttleSelector.limit);
+      const num = yield select(throttleSelector.numOfRunning);
+      if (limit <= num) {
+        break; // No rooms to run job
+      }
+
+      const job = jobs[0];
+      const task = yield fork(function* () {
+        yield call(job.job, ...job.args);
+        yield put(successJob({ id: job.id }));
+      });
+      yield put(runJob({ id: job.id, task }));
     }
-
-    const num = yield select(jobsSelector.numOfRunning);
-    if (LIMIT <= num) {
-      continue; // No rooms to run job
-    }
-
-    const job = jobs[0];
-    const task = yield fork(function* () {
-      yield call(job.job, ...job.args);
-      yield put(successJob({ id: job.id }));
-    });
-    yield put(runJob({ id: job.id, task }));
   }
 }
 
