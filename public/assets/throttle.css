@@ -1,0 +1,23 @@
+.tasks {
+  float: left;
+}
+
+.tasks > li {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-color: #C7C7C7;
+  margin: 0 3px 3px 0;
+}
+
+.tasks > li.success {
+  background-color: #79EA86;
+}
+
+.tasks > li.failure {
+  background-color: #FF8A8E;
+}
+
+.tasks > li.running {
+  background-color: #D7E184;
+}

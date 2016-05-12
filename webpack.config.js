@@ -2,7 +2,8 @@
 
 module.exports = {
   entry: {
-    autocomplete: './autocomplete/index.js'
+    autocomplete: './autocomplete/index.js',
+    throttle: './throttle/index.js'
   },
   module: {
     loaders: [{
