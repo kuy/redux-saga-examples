@@ -26,7 +26,10 @@ class App extends Component {
     };
     return (
       <div>
-        <h1>Hello Sagas!</h1>
+        <h1>
+          <a href="https://github.com/kuy/redux-saga-examples/tree/master/autocomplete">Autocomplete</a> from <a href="https://github.com/kuy/redux-saga-examples">redux-saga-examples</a> by <a href="https://twitter.com/kuy">@kuy</a>
+        </h1>
+        <h3>Type "c" to start suggestions. It starts completion lazily.</h3>
         <Suggest
           suggestions={suggests}
           onSuggestionsUpdateRequested={this.handleSuggest}

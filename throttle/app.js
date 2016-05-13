@@ -29,7 +29,9 @@ class App extends Component {
     const { app, throttle } = this.props;
     return (
       <div>
-        <h1>Throttle</h1>
+        <h1>
+          <a href="https://github.com/kuy/redux-saga-examples/tree/master/throttle">Throttle</a> from <a href="https://github.com/kuy/redux-saga-examples">redux-saga-examples</a> by <a href="https://twitter.com/kuy">@kuy</a>
+        </h1>
         <div>
           Task Producer: { app.producer ? 'On' : 'Off' }
           <span>&nbsp;</span>
