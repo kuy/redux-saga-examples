@@ -3,9 +3,10 @@ import createSagaMiddleware from 'redux-saga';
 import reducer from './reducers';
 import rootSaga from './sagas';
 import DevTools from './dev-tools';
+import sagaMonitor from './saga-monitor';
 
 export default function configureStore(initialState) {
-  const sagaMiddleware = createSagaMiddleware();
+  const sagaMiddleware = createSagaMiddleware({ sagaMonitor });
   const store = createStore(
     reducer,
     initialState,
