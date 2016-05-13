@@ -6,7 +6,8 @@
   },
   "homepage": "https://github.com/kuy/react-transport",
   "scripts": {
-    "start": "./node_modules/.bin/webpack-dev-server --progress --color --content-base public/"
+    "start": "./node_modules/.bin/webpack-dev-server --progress --color --content-base public/",
+    "build": "./node_modules/.bin/webpack"
   },
   "authors": [
     "Yuki Kodama <endflow.net@gmail.com>"
@@ -32,7 +33,7 @@
     "redux": "^3.5.2",
     "redux-actions": "^0.9.1",
     "redux-logger": "^2.6.1",
-    "redux-saga": "^0.10.2",
+    "redux-saga": "^0.10.4",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1"
   }

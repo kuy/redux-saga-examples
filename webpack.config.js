@@ -13,7 +13,7 @@ module.exports = {
     }]
   },
   output: {
-    path: __dirname + '/in-memory',
+    path: __dirname + '/build',
     filename: '[name].bundle.js',
     publicPath: '/in-memory'
   },

@@ -3,3 +3,4 @@ bundle.js
 *.log
 inboxsdk-app-id.js
 phase2/js/content.js
+build
