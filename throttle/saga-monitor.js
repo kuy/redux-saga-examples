@@ -16,7 +16,7 @@ const CANCEL_STYLE = 'color: #ccc'
 const IS_BROWSER = (typeof window !== 'undefined' && window.document)
 
 // `VERBOSE` can be made a setting configured from the outside.
-const VERBOSE = true
+const VERBOSE = false
 
 const time = () => {
   if(typeof performance !== 'undefined' && performance.now)
