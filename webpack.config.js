@@ -4,7 +4,8 @@ module.exports = {
   entry: {
     autocomplete: './autocomplete/index.js',
     throttle: './throttle/index.js',
-    startstop: './startstop/index.js'
+    startstop: './startstop/index.js',
+    microblog: './microblog/index.js'
   },
   module: {
     loaders: [{

@@ -10,6 +10,8 @@ Yet another example repository for redux-saga.
  + Execution queue with throttling concurrency
 + [Start-Stop](http://kuy.github.io/redux-saga-examples/startstop.html)
  + Chained cancellation with [Page Visibility API](https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API)
++ [Microblog](http://kuy.github.io/redux-saga-examples/microblog.html)
+ + Integration with [Firebase](https://firebase.google.com/)
 
 ## Getting Started
 
