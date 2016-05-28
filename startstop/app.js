@@ -22,6 +22,7 @@ class App extends Component {
           <span style={{ marginLeft: '4px' }}></span>
           <button onClick={this.handleToggle.bind(this)}>Toggle</button>
         </h3>
+        <h4>You can see the output from reporting saga in Developer Console.</h4>
         <ul>
           {history.map((duration, i) =>
             <li key={i}>[{i}] +{duration / 1000}msec</li>

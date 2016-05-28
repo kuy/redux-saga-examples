@@ -8,6 +8,8 @@ Yet another example repository for redux-saga.
  + Lazy request dispatching with cancellation
 + [Throttle](http://kuy.github.io/redux-saga-examples/throttle.html)
  + Execution queue with throttling concurrency
++ [Start-Stop](http://kuy.github.io/redux-saga-examples/startstop.html)
+ + Chained cancellation for start-and-stop control
 
 ## Getting Started
 
