@@ -1,7 +1,7 @@
-import { delay } from 'redux-saga';
+import { delay, eventChannel } from 'redux-saga';
 import { call, put, fork, take, select } from 'redux-saga/effects';
 import {
-  OFFLINE, ONLINE, INCREMENT, recordStats, increment
+  OFFLINE, ONLINE, INCREMENT, recordStats, increment, online, offline
 } from './actions';
 
 function* workerCounter() {
@@ -12,12 +12,9 @@ function* workerCounter() {
 }
 
 function* workerMonitor() {
-  let prev = (new Date).getTime();
   while (true) {
     yield take(INCREMENT);
-    const now = (new Date).getTime()
-    yield put(recordStats(now - prev));
-    prev = now;
+    yield put(recordStats((new Date).getTime()));
   }
 }
 
@@ -49,6 +46,27 @@ function* manager() {
   }
 }
 
+function createVisibilityChannel() {
+  return eventChannel(emit => {
+    const change = () => {
+      emit(document.hidden);
+    };
+    document.addEventListener('visibilitychange', change);
+    return () => {
+      document.removeEventListener('visibilitychange', change);
+    };
+  });
+}
+
+function* watcher() {
+  const channel = createVisibilityChannel();
+  while (true) {
+    const action = (yield take(channel)) ? offline() : online();
+    yield put(action);
+  }
+}
+
 export default function* rootSaga() {
+  yield fork(watcher);
   yield fork(manager);
 }

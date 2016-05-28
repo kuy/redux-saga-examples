@@ -3,11 +3,6 @@ import { connect } from 'react-redux';
 import { online, offline } from './actions';
 
 class App extends Component {
-  handleToggle() {
-    const { app: { status } } = this.props;
-    this.props.dispatch(status ? offline() : online());
-  }
-
   render() {
     const { app: { count, status }, stats: { history } } = this.props;
     return (
@@ -19,13 +14,15 @@ class App extends Component {
           Count: {count}
           <span style={{ marginLeft: '16px' }}></span>
           Status: {status ? 'ONLINE' : 'OFFLINE'}
-          <span style={{ marginLeft: '4px' }}></span>
-          <button onClick={this.handleToggle.bind(this)}>Toggle</button>
         </h3>
-        <h4>You can see the output from reporting saga in Developer Console.</h4>
+        <h4>
+          This example is running only while you're seeing.
+          When you switch the browser tab to others, it will be offline and stopped.<br />
+          The reporter saga outputs the current count to Developer Console periodically.
+        </h4>
         <ul>
-          {history.map((duration, i) =>
-            <li key={i}>[{i}] +{duration / 1000}msec</li>
+          {history.slice(1).map((time, i) =>
+            <li key={i}>[{i}] +{(time - history[i]) / 1000} seconds</li>
           )}
         </ul>
       </div>
