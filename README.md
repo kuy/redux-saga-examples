@@ -9,7 +9,7 @@ Yet another example repository for redux-saga.
 + [Throttle](http://kuy.github.io/redux-saga-examples/throttle.html)
  + Execution queue with throttling concurrency
 + [Start-Stop](http://kuy.github.io/redux-saga-examples/startstop.html)
- + Chained cancellation for start-and-stop control
+ + Chained cancellation with [Page Visibility API](https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API)
 
 ## Getting Started
 
