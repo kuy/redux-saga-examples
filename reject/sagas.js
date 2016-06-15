@@ -1,7 +1,8 @@
 import { takeEvery } from 'redux-saga';
-import { call, put, fork, select } from 'redux-saga/effects';
+import { call, put, fork, select, take } from 'redux-saga/effects';
 import {
-  REQUEST_UPDATE_SUBJECT, changeSubject, successUpdateSubject, failureUpdateSubject
+  CHANGE_SUBJECT, SUCCESS_UPDATE_SUBJECT, FAILURE_UPDATE_SUBJECT,
+  changeSubject, successUpdateSubject, failureUpdateSubject, requestUpdateSubject
 } from './actions';
 
 function result(behavior) {
@@ -29,33 +30,46 @@ function updateSubject(subject, behavior) {
     .catch(error => ({ error }));
 }
 
-function* runUpdateSubject({ payload }) {
-  // Backup current subject as prev subject for restoring later if needed
-  const { subject: prevSubject } = yield select(state => state.post);
+function* runUpdateSubject({ payload: newSubject, meta }) {
+  // Ignore changes from Sagas
+  if (meta && meta.source === 'saga') {
+    return;
+  }
 
-  // Change to new subject immediately for UX
-  const newSubject = payload.subject;
-  yield put(changeSubject(newSubject));
+  // Notify we're about to start a request
+  yield put(requestUpdateSubject());
 
   const { behavior } = yield select(state => state.app);
   const { data, error } = yield call(updateSubject, newSubject, behavior);
   if (data && !error) {
     yield put(successUpdateSubject({ data }));
-
-    // Nothing to do here, because new subject is already set
   } else {
     yield put(failureUpdateSubject({ error }));
-
-    // Rollback to previous subject
-    console.log('rollback', prevSubject);
-    yield put(changeSubject(prevSubject));
   }
 }
 
 function* handleUpdateSubject() {
-  yield* takeEvery(REQUEST_UPDATE_SUBJECT, runUpdateSubject);
+  yield* takeEvery(CHANGE_SUBJECT, runUpdateSubject);
+}
+
+function* restoreSubject() {
+  // Backup initial subject
+  let prevSubject = yield select(state => state.post.subject);
+
+  while (true) {
+    // Detect success or failure
+    const { type, payload } = yield take([SUCCESS_UPDATE_SUBJECT, FAILURE_UPDATE_SUBJECT]);
+    if (type === SUCCESS_UPDATE_SUBJECT) {
+      // Store new subject for next rollback
+      prevSubject = yield select(state => state.post.subject);
+    } else {
+      // Rollback!
+      yield put(changeSubject.fromSaga(prevSubject));
+    }
+  }
 }
 
 export default function* rootSaga() {
+  yield fork(restoreSubject);
   yield fork(handleUpdateSubject);
 }

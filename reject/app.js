@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Text from 'react-edit-inline';
-import { requestUpdateSubject, changeBehavior } from './actions';
+import { changeSubject, changeBehavior } from './actions';
 
 class App extends Component {
   handleSubject({ subject }) {
-    this.props.dispatch(requestUpdateSubject({ subject }));
+    this.props.dispatch(changeSubject(subject));
   }
 
   handleBehavior(e) {
