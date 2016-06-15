@@ -5,7 +5,8 @@ module.exports = {
     autocomplete: './autocomplete/index.js',
     throttle: './throttle/index.js',
     startstop: './startstop/index.js',
-    microblog: './microblog/index.js'
+    microblog: './microblog/index.js',
+    reject: './reject/index.js'
   },
   module: {
     loaders: [{
