@@ -11,6 +11,7 @@ class App extends Component {
       <h1>
         <a href="https://github.com/kuy/redux-saga-examples/tree/master/takex">TakeX</a> from <a href="https://github.com/kuy/redux-saga-examples">redux-saga-examples</a> by <a href="https://twitter.com/kuy">@kuy</a>
       </h1>
+      <h3>Please open <i>JavaScript Console</i> and click following buttons.</h3>
       <ul>
         <li><button onClick={e => this.handleClick('FETCH_USERS')}>FETCH_USERS</button></li>
         <li><button onClick={e => this.handleClick('FETCH_POSTS')}>FETCH_POSTS</button></li>

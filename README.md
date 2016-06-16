@@ -14,6 +14,8 @@ Yet another example repository for redux-saga.
  + Integration with [Firebase](https://firebase.google.com/): Auth and Realtime Database
 + [Reject](http://kuy.github.io/redux-saga-examples/reject.html)
  + In-place editing and handle rejected XHR response
++ [TakeX](http://kuy.github.io/redux-saga-examples/takex.html)
+ + Custom effect 'takex' accepts RegExp pattern of action types
 
 ## Getting Started
 
