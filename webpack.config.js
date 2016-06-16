@@ -6,7 +6,8 @@ module.exports = {
     throttle: './throttle/index.js',
     startstop: './startstop/index.js',
     microblog: './microblog/index.js',
-    reject: './reject/index.js'
+    reject: './reject/index.js',
+    takex: './takex/index.js'
   },
   module: {
     loaders: [{
