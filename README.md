@@ -16,6 +16,8 @@ Yet another example repository for redux-saga.
  + In-place editing and handle rejected XHR response
 + [TakeX](http://kuy.github.io/redux-saga-examples/takex.html)
  + Custom effect 'takex' accepts RegExp pattern of action types
++ [Form](http://kuy.github.io/redux-saga-examples/form.html)
+ + Integration with [redux-form](https://github.com/erikras/redux-form): Submit from redux-saga (based on [this solution](https://github.com/yelouafi/redux-saga/issues/161))
 
 ## Getting Started
 

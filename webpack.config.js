@@ -7,7 +7,8 @@ module.exports = {
     startstop: './startstop/index.js',
     microblog: './microblog/index.js',
     reject: './reject/index.js',
-    takex: './takex/index.js'
+    takex: './takex/index.js',
+    form: './form/index.js'
   },
   module: {
     loaders: [{
