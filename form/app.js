@@ -20,8 +20,4 @@ class App extends Component {
   }
 }
 
-function select({ app }) {
-  return { app };
-}
-
-export default connect(select)(App);
+export default connect()(App);

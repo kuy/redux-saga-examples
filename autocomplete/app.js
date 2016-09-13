@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Suggest from 'react-autosuggest';
-import { setKeyword, requestSuggest } from './actions';
+import { setKeyword, requestSuggest, clearSuggests } from './actions';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSuggest = this.handleSuggest.bind(this);
-  }
-
   handleChange(e, { newValue }) {
     this.props.dispatch(setKeyword(newValue));
   }
@@ -18,11 +12,15 @@ class App extends Component {
     this.props.dispatch(requestSuggest(value));
   }
 
+  handleClear() {
+    this.props.dispatch(clearSuggests());
+  }
+
   render() {
     const { search: { suggests, keyword } } = this.props;
     const props = {
       value: keyword,
-      onChange: this.handleChange
+      onChange: this.handleChange.bind(this)
     };
     return (
       <div>
@@ -32,7 +30,8 @@ class App extends Component {
         <h3>Type "c" to start suggestions. It starts completion lazily.</h3>
         <Suggest
           suggestions={suggests}
-          onSuggestionsUpdateRequested={this.handleSuggest}
+          onSuggestionsFetchRequested={this.handleSuggest.bind(this)}
+          onSuggestionsClearRequested={this.handleClear.bind(this)}
           renderSuggestion={s => <span>{s.name}</span>}
           getSuggestionValue={s => s.name}
           inputProps={props}

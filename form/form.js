@@ -1,34 +1,27 @@
 import React, { Component, PropTypes } from 'react'
-import { reduxForm } from 'redux-form'
-
-const fields = ['first', 'last'];
+import { Field, reduxForm } from 'redux-form'
 
 class Form extends Component {
   static get propTypes() {
     return {
-      fields: PropTypes.object.isRequired,
       handleSubmit: PropTypes.func.isRequired,
       submitting: PropTypes.bool.isRequired
     };
   }
 
   render() {
-    const {
-      fields: { first, last },
-      handleSubmit,
-      submitting
-    } = this.props;
+    const { handleSubmit, submitting } = this.props;
     return (<form onSubmit={handleSubmit}>
         <div>
           <label>First Name</label>
           <div>
-            <input type="text" placeholder="First Name" {...first}/>
+            <Field name="first" component="input" type="text" placeholder="First Name" />
           </div>
         </div>
         <div>
           <label>Last Name</label>
           <div>
-            <input type="text" placeholder="Last Name" {...last}/>
+            <Field name="last" component="input" type="text" placeholder="Last Name" />
           </div>
         </div>
         <div>
@@ -42,6 +35,5 @@ class Form extends Component {
 }
 
 export default reduxForm({
-  form: 'redux',
-  fields
+  form: 'redux'
 })(Form);
