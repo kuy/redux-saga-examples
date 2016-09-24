@@ -1,6 +1,6 @@
 import { call, fork, take } from 'redux-saga/effects';
 
-function* takexSaga(pattern) {
+export function* takexSaga(pattern) {
   let action;
   while (true) {
     action = yield take('*');
@@ -14,11 +14,11 @@ function* takexSaga(pattern) {
   return action;
 }
 
-function takex(pattern) {
+export function takex(pattern) {
   return call(takexSaga, pattern);
 }
 
-function* handleActions() {
+export function* handleActions() {
   while (true) {
     const action = yield takex(/^FETCH_/);
     console.log('handle', action.type);
