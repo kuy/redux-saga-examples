@@ -2,9 +2,9 @@
   "name": "redux-saga-examples",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kuy/react-transport.git"
+    "url": "https://github.com/kuy/redux-saga-examples.git"
   },
-  "homepage": "https://github.com/kuy/react-transport",
+  "homepage": "https://github.com/kuy/redux-saga-examples",
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --progress --color --content-base public/",
     "build": "./node_modules/.bin/webpack"
@@ -26,9 +26,9 @@
     "babel-register": "^6.14.0",
     "mocha": "^3.0.2",
     "power-assert": "^1.4.1",
-    "react": "^15.3.1",
-    "react-autosuggest": "^6.0.3",
-    "react-dom": "^15.3.1",
+    "react": "^15.3.2",
+    "react-autosuggest": "^6.0.4",
+    "react-dom": "^15.3.2",
     "react-edit-inline": "^1.0.7",
     "react-redux": "^4.4.5",
     "redux": "^3.6.0",
@@ -36,10 +36,10 @@
     "redux-devtools": "^3.3.1",
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.0.11",
-    "redux-form": "^6.0.2",
+    "redux-form": "^6.0.5",
     "redux-logger": "^2.6.1",
     "redux-saga": "^0.11.1",
     "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.15.1"
+    "webpack-dev-server": "^1.16.1"
   }
 }
