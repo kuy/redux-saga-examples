@@ -8,7 +8,8 @@ module.exports = {
     microblog: './microblog/index.js',
     reject: './reject/index.js',
     takex: './takex/index.js',
-    form: './form/index.js'
+    form: './form/index.js',
+    dnd: './dnd/index.js'
   },
   module: {
     loaders: [{

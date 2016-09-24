@@ -1,0 +1,11 @@
+.dnd-area {
+  background-color: lightgray;
+  width: 500px;
+  height: 300px;
+}
+
+.dnd-box {
+  background-color: steelblue;
+  width: 80px;
+  height: 80px;
+}
