@@ -18,7 +18,8 @@ Yet another example repository for redux-saga.
  + Custom effect 'takex' accepts RegExp pattern of action types
 + [Form](http://kuy.github.io/redux-saga-examples/form.html)
  + Integration with [redux-form](https://github.com/erikras/redux-form): Submit from redux-saga (based on [this solution](https://github.com/yelouafi/redux-saga/issues/161))
-
++ [Wizard](http://kuy.github.io/redux-saga-examples/wizard.html)
+ + Wizard app with forward/backward transition and error handling
 
 ## Have a problem?
 
