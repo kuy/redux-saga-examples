@@ -1,37 +1,66 @@
-import { call, fork, take, select, put } from 'redux-saga/effects';
-import { WIZARD_FORWARD, WIZARD_BACKWARD, updatePage, updateNavigation } from '../actions';
+import { call, fork, take, select, put, cancel } from 'redux-saga/effects';
+import {
+  WIZARD_FORWARD, WIZARD_BACKWARD, WIZARD_ERROR, UPDATE_PAGE,
+  wizardForward, wizardError, updatePage, updateNavigation, changeToken
+} from '../actions';
+import * as API from '../api';
 
-export function* handleValidation() {
+const EMAIL_PATTERN = /^\w+@\w+\.\w+$/;
+
+// Determine status of Next/Back buttons
+export function* handleNavigation() {
   while (true) {
     // Detect chages of something
     yield take('*');
 
     // Do validation based on current page and update navigation buttons
     const { page } = yield select(state => state.app);
+    const buttons = { forward: false, backward: false };
     switch (page) {
       case 'start':
-        yield put(updateNavigation({ forward: true, backward: false }));
+        const { email } = yield select(state => state.data);
+        if (typeof email === 'string' && EMAIL_PATTERN.test(email)) {
+          buttons.forward = true;
+        }
         break;
       case 'verify':
-        yield put(updateNavigation({ forward: false, backward: true }));
+        buttons.backward = true;
         break;
+      case 'pay':
+        buttons.backward = true;
+        break;
+      default:
+        continue;
     }
+
+    // Update button states
+    yield put(updateNavigation(buttons));
   }
 }
 
-export function* handleNavigation() {
+// Describe workflow between pages
+export function* handleTransition() {
   while (true) {
-    const { type, payload } = yield take([WIZARD_FORWARD, WIZARD_BACKWARD]);
+    const { type, payload } = yield take([WIZARD_FORWARD, WIZARD_BACKWARD, WIZARD_ERROR]);
     const { page } = yield select(state => state.app);
     switch (page) {
       case 'start':
         if (type === WIZARD_FORWARD) {
           yield put(updatePage('verify'));
+        } else {
+          // No previous page
         }
         break;
       case 'verify':
         if (type === WIZARD_FORWARD) {
-          // NOP
+          yield put(updatePage('pay'));
+        } else {
+          yield put(updatePage('start'));
+        }
+        break;
+      case 'pay':
+        if (type === WIZARD_FORWARD) {
+          // NOT IMPLEMENTED
         } else {
           yield put(updatePage('start'));
         }
@@ -40,13 +69,48 @@ export function* handleNavigation() {
   }
 }
 
+function* processVerification() {
+  const { email } = yield select(state => state.data);
+  const { data: token, error } = yield call(API.verify, email);
+  if (token && !error) {
+    yield put(changeToken(token));
+
+    // Forward automatically (same effect as clicking 'Next' button)
+    yield put(wizardForward());
+  } else {
+    yield put(wizardError(error));
+  }
+}
+
+// Describe reactions on change pages
+export function* handleReaction() {
+  let task;
+  while (true) {
+    const { payload: page } = yield take(UPDATE_PAGE);
+
+    // Cancel ongoing process if exists
+    if (task) {
+      yield cancel(task);
+      task = undefined;
+    }
+
+    switch (page) {
+      case 'verify':
+        task = yield fork(processVerification);
+        break;
+    }
+  }
+}
+
 export function* triggerWizard() {
-  // Just trigger 'handleValidation' saga
+  // Just trigger 'handleNavigation' saga
   yield put({ type: 'WIZARD_INIT' });
 }
 
 export default function* rootSaga() {
-  yield fork(handleValidation);
   yield fork(handleNavigation);
+  yield fork(handleTransition);
+  yield fork(handleReaction);
+
   yield fork(triggerWizard);
 }

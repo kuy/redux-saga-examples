@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { UPDATE_PAGE, UPDATE_NAVIGATION } from './actions';
+import { UPDATE_PAGE, UPDATE_NAVIGATION, CHANGE_EMAIL, CHANGE_TOKEN } from './actions';
 
 const initial = {
   app: {
@@ -22,6 +22,10 @@ function app(state = initial.app, { type, payload }) {
 
 function data(state = initial.data, { type, payload }) {
   switch (type) {
+    case CHANGE_EMAIL:
+      return { ...state, email: payload };
+    case CHANGE_TOKEN:
+      return { ...state, token: payload };
   }
   return state;
 }

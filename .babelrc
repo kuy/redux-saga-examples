@@ -6,12 +6,14 @@
     "development": {
       "presets": [
         "power-assert"
-      ]
+      ],
+      "sourceMaps": "inline"
     },
     "production": {
       "plugins": [
         "babel-plugin-unassert"
-      ]
+      ],
+      "sourceMaps": false
     }
   }
 }
