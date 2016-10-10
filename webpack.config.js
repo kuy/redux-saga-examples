@@ -1,5 +1,7 @@
 'use strict';
 
+var webpack = require('webpack');
+
 module.exports = {
   entry: {
     autocomplete: './autocomplete/index.js',
@@ -23,5 +25,9 @@ module.exports = {
     filename: '[name].bundle.js',
     publicPath: '/in-memory'
   },
-  devtool: 'inline-source-map'
+  plugins: (process.env.NODE_ENV === 'production') ? [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: { warnings: false }
+    })
+  ] : []
 };
