@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
-import { UPDATE_PAGE, UPDATE_NAVIGATION, CHANGE_EMAIL, CHANGE_TOKEN } from './actions';
+import {
+  UPDATE_PAGE, UPDATE_NAVIGATION, CHANGE_EMAIL, CHANGE_TOKEN,
+  MESSAGE_ADD, MESSAGE_REMOVE
+} from './actions';
 
 const initial = {
   app: {
@@ -7,7 +10,8 @@ const initial = {
     canForward: false,
     canBackward: false,
   },
-  data: {}
+  data: {},
+  message: [],
 };
 
 function app(state = initial.app, { type, payload }) {
@@ -30,6 +34,16 @@ function data(state = initial.data, { type, payload }) {
   return state;
 }
 
+function message(state = initial.message, { type, payload }) {
+  switch (type) {
+    case MESSAGE_ADD:
+      return [ ...state, payload ];
+    case MESSAGE_REMOVE:
+      return state.filter(m => m.id !== payload);
+  }
+  return state;
+}
+
 export default combineReducers(
-  { app, data }
+  { app, data, message }
 );

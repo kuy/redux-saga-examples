@@ -16,3 +16,11 @@ export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const CHANGE_TOKEN = 'CHANGE_TOKEN';
 export const changeEmail = createAction(CHANGE_EMAIL);
 export const changeToken = createAction(CHANGE_TOKEN);
+
+export const MESSAGE = 'MESSAGE';
+export const message = createAction(MESSAGE);
+
+export const MESSAGE_ADD = 'MESSAGE_ADD';
+export const MESSAGE_REMOVE = 'MESSAGE_REMOVE';
+export const messageAdd = createAction(MESSAGE_ADD);
+export const messageRemove = createAction(MESSAGE_REMOVE);

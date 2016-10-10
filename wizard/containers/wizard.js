@@ -13,10 +13,18 @@ class Wizard extends Component {
   }
 
   render() {
+    const { message } = this.props;
     const { page, canForward, canBackward } = this.props.app;
     const Page = pages[page];
     return <div style={{ width: '600px' }}>
       <Page />
+      <div style={{ color: 'red', fontWeight: 'bold', minHeight: '30px' }}>
+        <ul>
+          {message.map(msg =>
+            <li>{msg.body}</li>
+          )}
+        </ul>
+      </div>
       <div>
         <div style={{ float: 'left' }}>
           <button disabled={!canBackward} onClick={e => this.handleBack()}>Back</button>
@@ -29,8 +37,8 @@ class Wizard extends Component {
   }
 }
 
-function select({ app }) {
-  return { app };
+function select({ app, message }) {
+  return { app, message };
 }
 
 export default connect(select)(Wizard);

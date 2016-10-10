@@ -1,7 +1,7 @@
 import { call, fork, take, select, put, cancel } from 'redux-saga/effects';
 import {
   WIZARD_FORWARD, WIZARD_BACKWARD, WIZARD_ERROR, UPDATE_PAGE,
-  wizardForward, wizardError, updatePage, updateNavigation, changeToken
+  wizardForward, wizardError, updatePage, updateNavigation, changeToken, message
 } from '../actions';
 import * as API from '../api';
 
@@ -73,11 +73,13 @@ function* processVerification() {
   const { email } = yield select(state => state.data);
   const { data: token, error } = yield call(API.verify, email);
   if (token && !error) {
+    yield put(message('Success Verification'));
     yield put(changeToken(token));
 
     // Forward automatically (same effect as clicking 'Next' button)
     yield put(wizardForward());
   } else {
+    yield put(message('Error Verification'));
     yield put(wizardError(error));
   }
 }
@@ -89,13 +91,14 @@ export function* handleReaction() {
     const { payload: page } = yield take(UPDATE_PAGE);
 
     // Cancel ongoing process if exists
-    if (task) {
+    if (task && task.isRunning()) {
       yield cancel(task);
-      task = undefined;
+      yield put(message('Cancelled'));
     }
 
     switch (page) {
       case 'verify':
+        // Store return value of yield for task cancellation
         task = yield fork(processVerification);
         break;
     }
@@ -103,8 +106,7 @@ export function* handleReaction() {
 }
 
 export function* triggerWizard() {
-  // Just trigger 'handleNavigation' saga
-  yield put({ type: 'WIZARD_INIT' });
+  yield put({ type: '__WIZARD__' });
 }
 
 export default function* rootSaga() {
@@ -112,5 +114,6 @@ export default function* rootSaga() {
   yield fork(handleTransition);
   yield fork(handleReaction);
 
+  // Just trigger 'handleNavigation' saga
   yield fork(triggerWizard);
 }
