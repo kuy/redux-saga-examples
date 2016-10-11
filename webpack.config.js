@@ -11,7 +11,8 @@ module.exports = {
     reject: './reject/index.js',
     takex: './takex/index.js',
     form: './form/index.js',
-    wizard: './wizard/index.js'
+    wizard: './wizard/index.js',
+    order: './order/index.js'
   },
   module: {
     loaders: [{
